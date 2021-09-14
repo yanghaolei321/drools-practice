@@ -1,7 +1,7 @@
 package com.galaxy.droolspractice.compiler;
 
 
-import com.galaxy.droolspractice.compile.JavaStringCompiler;
+import com.galaxy.droolspractice.utils.compile.JavaStringCompiler;
 import com.galaxy.droolspractice.compiler.bean.BeanProxy;
 import com.galaxy.droolspractice.compiler.bean.User;
 import org.junit.Before;

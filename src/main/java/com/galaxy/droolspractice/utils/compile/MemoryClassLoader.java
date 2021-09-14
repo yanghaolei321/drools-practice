@@ -1,4 +1,4 @@
-package com.galaxy.droolspractice.compile;
+package com.galaxy.droolspractice.utils.compile;
 
 import java.net.URL;
 import java.net.URLClassLoader;

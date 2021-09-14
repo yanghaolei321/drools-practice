@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galaxy.codegenerator..mapper.RuleFieldMapper">
+
+  <resultMap id="ruleFieldMap" type="com.galaxy.codegenerator.api..entity.RuleField">
+              <id property="id" column="id"/>
+                    <result property="ruleId" column="rule_id"/>
+                    <result property="filedName" column="filed_name"/>
+                    <result property="fieldDesc" column="field_desc"/>
+                    <result property="filedType" column="filed_type"/>
+                    <result property="fieldCode" column="field_code"/>
+                    <result property="dsDesc" column="ds_desc"/>
+                    <result property="createAudit" column="create_audit"/>
+                    <result property="updateAudit" column="update_audit"/>
+                    <result property="createTime" column="create_time"/>
+                    <result property="modifyTime" column="modify_time"/>
+            </resultMap>
+</mapper>

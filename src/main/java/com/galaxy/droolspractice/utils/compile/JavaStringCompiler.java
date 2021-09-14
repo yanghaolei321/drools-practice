@@ -1,4 +1,4 @@
-package com.galaxy.droolspractice.compile;
+package com.galaxy.droolspractice.utils.compile;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
