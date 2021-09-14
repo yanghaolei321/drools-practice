@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.galaxy.codegenerator..mapper.RuleFieldMapper">
+<mapper namespace="com.galaxy.droolspractice.mapper.RuleFieldMapper">
 
-  <resultMap id="ruleFieldMap" type="com.galaxy.codegenerator.api..entity.RuleField">
+  <resultMap id="ruleFieldMap" type="com.galaxy.droolspractice.api.entity.RuleField">
               <id property="id" column="id"/>
                     <result property="ruleId" column="rule_id"/>
                     <result property="filedName" column="filed_name"/>
