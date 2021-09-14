@@ -40,7 +40,7 @@ public class Swagger2Configuration {
      */
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
-            .title("LC的接口文档")
+            .title("LinChe的接口文档")
             .description("Drools-Practice 相关接口的文档")
             .termsOfServiceUrl("http://localhost:8081/hello")
             .version("1.0")

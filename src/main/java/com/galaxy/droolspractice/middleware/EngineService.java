@@ -34,7 +34,7 @@ public class EngineService {
     private final IRuleService ruleService;
     private final IRuleFieldService ruleFieldService;
 
-    private final String prefix = "public class DataDTO{ ";
+    private final String prefix = "public class DataDTO{ " + "\n";
     private final String postfix = "}";
     private final String PUBLIC = "public ";
 
@@ -65,21 +65,26 @@ public class EngineService {
         stringBuffer.append(prefix);
 
         fieldVOList.forEach(ruleField -> {
-            // 1 获取修饰符Public
-            stringBuffer.append(PUBLIC);
+
+            // 1 修饰
+            String s = "public ";
 
             // 2 获取字段类型
             RuleFieldTypeEnum fieldTypeEnum = RuleFieldTypeEnum.getByValue(ruleField.getFiledType());
             if (ObjectUtil.isNull(fieldTypeEnum)) {
                 throw new BusinessException(ErrorCode.PARAM_ERROR);
             }
-            stringBuffer.append(fieldTypeEnum.getValue() + " ");
+            s += fieldTypeEnum.getValue() + " ";
 
             // 3 获取变量名
-            stringBuffer.append(ruleField.getFiledName() + " " + "\n");
+            s += ruleField.getFiledName() + "; " + "\n";
 
             log.info("Cur RuleField Id:{} Name:{}", ruleField.getId(), ruleField.getFiledName());
-            log.info("Str:{}",stringBuffer.toString());
+            log.info("Str:{}",s);
+
+            // 4 拼接
+            stringBuffer.append(s);
+
         });
         stringBuffer.append(postfix);
         String ret = stringBuffer.toString();
