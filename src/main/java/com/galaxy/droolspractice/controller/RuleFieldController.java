@@ -39,37 +39,37 @@ public class RuleFieldController {
 
     private final IRuleFieldService ruleFieldService;
 
-    @ApiOperation(value = "分页查询规则引擎-规则变量表[][]", notes = "", position = 1)
+    @ApiOperation(value = "分页查询规则引擎-规则变量表[LinChe][文档已经设计]", notes = "", position = 1)
     @PostMapping("/page")
     public R<IPage<RuleFieldVO>> page(@Valid @RequestBody RuleFieldPageDTO param) {
         return null;
     }
 
-    @ApiOperation(value = "列表查询规则引擎-规则变量表[][]", notes = "", position = 2)
+    @ApiOperation(value = "列表查询规则引擎-规则变量表[LinChe][文档已经设计]", notes = "", position = 2)
     @PostMapping("/list")
     public R<List<RuleFieldVO>> list(@Valid @RequestBody RuleFieldListDTO param) {
         return null;
     }
 
-    @ApiOperation(value = "通过id查询规则引擎-规则变量表[][]", notes = "", position = 3)
+    @ApiOperation(value = "通过id查询规则引擎-规则变量表[LinChe][文档已经设计]", notes = "", position = 3)
     @PostMapping("/get")
     public R get(@Valid @RequestBody IdDTO param) {
         return null;
     }
 
-    @ApiOperation(value = "新增规则引擎-规则变量表[][]", notes = "", position = 4)
+    @ApiOperation(value = "新增规则引擎-规则变量表[LinChe][文档已经设计]", notes = "", position = 4)
     @PostMapping("/save")
     public R save(@Valid @RequestBody RuleFieldSaveDTO param) {
         return null;
     }
 
-    @ApiOperation(value = "修改规则引擎-规则变量表[][]", notes = "", position = 5)
+    @ApiOperation(value = "修改规则引擎-规则变量表[LinChe][文档已经设计]", notes = "", position = 5)
     @PostMapping("/update")
     public R update(@RequestBody RuleFieldUpdateDTO param) {
         return null;
     }
 
-    @ApiOperation(value = "通过id删除规则引擎-规则变量表[][]", notes = "", position = 6)
+    @ApiOperation(value = "通过id删除规则引擎-规则变量表[LinChe][文档已经设计]", notes = "", position = 6)
     @PostMapping("/delete")
     public R delete(@Valid @RequestBody IdDTO param) {
         return null;

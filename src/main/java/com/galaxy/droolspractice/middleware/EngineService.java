@@ -1,0 +1,92 @@
+package com.galaxy.droolspractice.middleware;
+
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.galaxy.droolspractice.api.entity.Rule;
+import com.galaxy.droolspractice.api.entity.RuleField;
+import com.galaxy.droolspractice.api.model.engine.EngineDataUploadDTO;
+import com.galaxy.droolspractice.enums.RuleFieldTypeEnum;
+import com.galaxy.droolspractice.infra.exception.BusinessException;
+import com.galaxy.droolspractice.infra.exception.errorCode.ErrorCode;
+import com.galaxy.droolspractice.service.IRuleFieldService;
+import com.galaxy.droolspractice.service.IRuleService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * 引擎层-Service
+ *
+ * @author yanghaolei
+ * @date 9/14/21 7:33 PM
+ */
+
+@Slf4j
+@Service
+@AllArgsConstructor
+public class EngineService {
+
+
+    private final IRuleService ruleService;
+    private final IRuleFieldService ruleFieldService;
+
+    private final String prefix = "public class DataDTO{ ";
+    private final String postfix = "}";
+    private final String PUBLIC = "public ";
+
+    public String uploadData(EngineDataUploadDTO engineDataUploadDTO) {
+
+        // 1 根据规则集的GUID获取到规则集的id
+        Rule rule = ruleService.getOne(
+            new LambdaQueryWrapper<Rule>()
+                .eq(Rule::getGuid, engineDataUploadDTO.getGuid()));
+
+        if (ObjectUtil.isNull(rule)) {
+            log.error("--- EngineDataUploadDTO :{} ---", engineDataUploadDTO);
+            throw new BusinessException(ErrorCode.DATA_NOT_FOUND);
+        }
+        Long ruleId = rule.getId();
+
+        // 2  根据规则集获取该规则集对应的所有字段
+        List<RuleField> fieldVOList = ruleFieldService.list(
+            new LambdaQueryWrapper<RuleField>().in(RuleField::getRuleId, ruleId));
+
+        if (CollectionUtil.isEmpty(fieldVOList)) {
+            log.error("--- EngineDataUploadDTO :{} ---", engineDataUploadDTO);
+            throw new BusinessException(ErrorCode.DATA_NOT_FOUND);
+        }
+
+        // 3 合并规则
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(prefix);
+
+        fieldVOList.forEach(ruleField -> {
+            // 1 获取修饰符Public
+            stringBuffer.append(PUBLIC);
+
+            // 2 获取字段类型
+            RuleFieldTypeEnum fieldTypeEnum = RuleFieldTypeEnum.getByValue(ruleField.getFiledType());
+            if (ObjectUtil.isNull(fieldTypeEnum)) {
+                throw new BusinessException(ErrorCode.PARAM_ERROR);
+            }
+            stringBuffer.append(fieldTypeEnum.getValue() + " ");
+
+            // 3 获取变量名
+            stringBuffer.append(ruleField.getFiledName() + " " + "\n");
+
+            log.info("Cur RuleField Id:{} Name:{}", ruleField.getId(), ruleField.getFiledName());
+            log.info("Str:{}",stringBuffer.toString());
+        });
+        stringBuffer.append(postfix);
+        String ret = stringBuffer.toString();
+        log.info(ret);
+
+        return StrUtil.EMPTY;
+
+    }
+
+}

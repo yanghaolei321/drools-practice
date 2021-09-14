@@ -19,34 +19,6 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 public class RuleFieldListDTO extends BaseDTO {
 
-    @ApiModelProperty(value = "MODEL ID", example = "")
+    @ApiModelProperty(value = "rule ID", example = "规则集")
     private Long ruleId;
-
-    @ApiModelProperty(value = "变量名称", example = "")
-    private String filedName;
-
-    @ApiModelProperty(value = "变量描述", example = "")
-    private String fieldDesc;
-
-    @ApiModelProperty(value = "变量类型", example = "")
-    private Integer filedType;
-
-    @ApiModelProperty(value = "变量编码", example = "")
-    private String fieldCode;
-
-    @ApiModelProperty(value = "数据源描述", example = "")
-    private String dsDesc;
-
-    @ApiModelProperty(value = "记录创建人", example = "")
-    private String createAudit;
-
-    @ApiModelProperty(value = "记录更新人", example = "")
-    private String updateAudit;
-
-    @ApiModelProperty(value = "创建时间", example = "")
-    private LocalDateTime createTime;
-
-    @ApiModelProperty(value = "更新时间", example = "")
-    private LocalDateTime modifyTime;
-
 }

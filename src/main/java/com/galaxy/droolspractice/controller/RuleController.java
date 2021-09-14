@@ -37,37 +37,37 @@ public class RuleController {
 
     private final IRuleService ruleService;
 
-    @ApiOperation(value = "分页查询规则引擎-规则[][]", notes = "")
+    @ApiOperation(value = "分页查询规则引擎-规则[LinChe][文档已经设计]", notes = "")
     @PostMapping("/page")
     public R<IPage<RuleVO>> page(@Valid @RequestBody RulePageDTO param) {
         return null;
     }
 
-    @ApiOperation(value = "列表查询规则引擎-规则[][]", notes = "")
+    @ApiOperation(value = "列表查询规则引擎-规则[LinChe][文档已经设计]", notes = "")
     @PostMapping("/list")
     public R<List<RuleVO>> list(@Valid @RequestBody RuleListDTO param) {
         return null;
     }
 
-    @ApiOperation(value = "通过id查询规则引擎-规则[][]", notes = "")
+    @ApiOperation(value = "通过id查询规则引擎-规则[LinChe][文档已经设计]", notes = "")
     @PostMapping("/get")
     public R get(@Valid @RequestBody IdDTO param) {
         return null;
     }
 
-    @ApiOperation(value = "新增规则引擎-规则[][]", notes = "")
+    @ApiOperation(value = "新增规则引擎-规则[LinChe][文档已经设计]", notes = "")
     @PostMapping("/save")
     public R save(@Valid @RequestBody RuleSaveDTO param) {
         return null;
     }
 
-    @ApiOperation(value = "修改规则引擎-规则[][]", notes = "")
+    @ApiOperation(value = "修改规则引擎-规则[LinChe][文档已经设计]", notes = "")
     @PostMapping("/update")
     public R update(@RequestBody RuleUpdateDTO param) {
         return null;
     }
 
-    @ApiOperation(value = "通过id删除规则引擎-规则[][]", notes = "")
+    @ApiOperation(value = "通过id删除规则引擎-规则[LinChe][文档已经设计]", notes = "")
     @PostMapping("/delete")
     public R delete(@Valid @RequestBody IdDTO param) {
         return null;

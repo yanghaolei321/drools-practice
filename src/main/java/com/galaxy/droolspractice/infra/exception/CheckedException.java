@@ -1,4 +1,4 @@
-package com.galaxy.droolspractice.exception;
+package com.galaxy.droolspractice.infra.exception;
 
 /**
  * CheckedException
