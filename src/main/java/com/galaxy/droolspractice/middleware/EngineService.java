@@ -12,11 +12,14 @@ import com.galaxy.droolspractice.infra.exception.BusinessException;
 import com.galaxy.droolspractice.infra.exception.errorCode.ErrorCode;
 import com.galaxy.droolspractice.service.IRuleFieldService;
 import com.galaxy.droolspractice.service.IRuleService;
+import com.galaxy.droolspractice.utils.compile.JavaStringCompiler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 引擎层-Service
@@ -33,12 +36,14 @@ public class EngineService {
 
     private final IRuleService ruleService;
     private final IRuleFieldService ruleFieldService;
+    private final JavaStringCompiler compiler;
 
-    private final String prefix = "public class DataDTO{ " + "\n";
+
+    private final String prefix = "package com.galaxy.droolspractice;" + "\n" +
+                                  "public class DataDTO{ " + "\n";
     private final String postfix = "}";
-    private final String PUBLIC = "public ";
 
-    public String uploadData(EngineDataUploadDTO engineDataUploadDTO) {
+    public String uploadData(EngineDataUploadDTO engineDataUploadDTO) throws IOException,ClassNotFoundException {
 
         // 1 根据规则集的GUID获取到规则集的id
         Rule rule = ruleService.getOne(
@@ -66,21 +71,21 @@ public class EngineService {
 
         fieldVOList.forEach(ruleField -> {
 
-            // 1 修饰
+            // 3.1 修饰
             String s = "public ";
 
-            // 2 获取字段类型
+            // 3.2 获取字段类型
             RuleFieldTypeEnum fieldTypeEnum = RuleFieldTypeEnum.getByValue(ruleField.getFiledType());
             if (ObjectUtil.isNull(fieldTypeEnum)) {
                 throw new BusinessException(ErrorCode.PARAM_ERROR);
             }
             s += fieldTypeEnum.getValue() + " ";
 
-            // 3 获取变量名
+            // 3.3 获取变量名
             s += ruleField.getFiledName() + "; " + "\n";
 
             log.info("Cur RuleField Id:{} Name:{}", ruleField.getId(), ruleField.getFiledName());
-            log.info("Str:{}",s);
+            log.info("Str:{}", s);
 
             // 4 拼接
             stringBuffer.append(s);
@@ -89,6 +94,11 @@ public class EngineService {
         stringBuffer.append(postfix);
         String ret = stringBuffer.toString();
         log.info(ret);
+
+
+        // 5 编译成对象
+        Map<String, byte[]> results = compiler.compile("DataDTO.java", ret);
+        Class<?> clazz = compiler.loadClass("com.galaxy.droolspractice.DataDTO", results);
 
         return StrUtil.EMPTY;
 

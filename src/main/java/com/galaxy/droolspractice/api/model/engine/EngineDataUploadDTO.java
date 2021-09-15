@@ -20,4 +20,11 @@ public class EngineDataUploadDTO {
     @ApiModelProperty(value = "规则集中的guid", example = "345CB10BDD8A")
     private String guid;
 
+    @ApiModelProperty(value = "json信息", example = "{\n" +
+        " \"userId\":\"18516249909\",\n" +
+        " \"loginTime\":1605339018000, \n" +
+        " \"amount\":500.0\n" +
+        " }   ")
+    private String jsonInfo;
+
 }
