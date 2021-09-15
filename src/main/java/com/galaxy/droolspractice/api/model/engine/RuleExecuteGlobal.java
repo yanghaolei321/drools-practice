@@ -18,7 +18,7 @@ public class RuleExecuteGlobal {
     /**
      * Fact对象
      */
-    private BaseFact factBean;
+    private FactBean factBean;
 
     /**
      * 执行结果

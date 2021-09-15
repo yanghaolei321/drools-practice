@@ -1,14 +1,12 @@
 package com.galaxy.droolspractice.middleware;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.galaxy.droolspractice.api.entity.Rule;
 import com.galaxy.droolspractice.api.entity.RuleField;
-import com.galaxy.droolspractice.api.model.engine.FactBean;
 import com.galaxy.droolspractice.api.model.engine.EngineDataUploadDTO;
+import com.galaxy.droolspractice.api.model.engine.FactBean;
 import com.galaxy.droolspractice.api.model.engine.RuleExecutorResult;
-import com.galaxy.droolspractice.api.model.engine.User;
 import com.galaxy.droolspractice.enums.RuleFieldTypeEnum;
 import com.galaxy.droolspractice.infra.exception.BusinessException;
 import com.galaxy.droolspractice.infra.exception.errorCode.ErrorCode;
@@ -65,20 +63,15 @@ public class EngineService {
         List<RuleField> fieldList = ruleFieldService.listByRuleId(ruleId);
 
         // 3 动态生成Fact对象 解析前端数据
-//        FactBean bean = parseData(fieldList,engineDataUploadDTO);
-//        log.info("FactBean:{}",JSON.toJSON(bean));
-        User user = new User();
-        user.setCreated(1);
-        user.setUserId("ss");
-        user.setUserName("ss");
-        user.setAge(20);
+        FactBean bean = parseData(fieldList, engineDataUploadDTO);
+        log.info("FactBean:{}", JSON.toJSON(bean));
 
         // 4 动态生成Drt文件并加载到内存中
         generateRule(rule);
 
         // 5 引擎执行
-        RuleExecutorResult ruleExecutorResult = RuleExecutor.execute(user);
-        log.info("ruleExecutorResult:{}",ruleExecutorResult);
+        RuleExecutorResult ruleExecutorResult = RuleExecutor.execute(bean);
+        log.info("ruleExecutorResult:{}", ruleExecutorResult);
 
         return Boolean.TRUE;
 
@@ -137,7 +130,7 @@ public class EngineService {
     /**
      * 根据String格式的Drl生成Maven结构的规则
      *
-     * @param  ruleStr
+     * @param ruleStr
      */
     private void createOrRefreshDrlInMemory(String ruleStr) {
         KieServices kieServices = KieServices.Factory.get();
@@ -161,7 +154,6 @@ public class EngineService {
     private void doAfterGenerate(KieServices kieServices) {
 
     }
-
 
 
     /**

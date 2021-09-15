@@ -19,7 +19,7 @@ template "judge condition"
 rule "judge_@{ruleName}"
 date-effective "@{beginTime}"
 when
-    $p : User(age > 10);
+
 then
    System.out.println("==== Match === ");
 end

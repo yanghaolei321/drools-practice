@@ -54,7 +54,7 @@ public class RuleExecutor {
      * @param fact fact对象
      * @return RuleExecutorResult
      */
-    public static RuleExecutorResult execute(BaseFact fact) {
+    public static RuleExecutorResult execute(FactBean fact) {
         log.info("RuleExecutor|execute|fact={}", JSON.toJSON(fact));
         StatelessKieSession statelessKieSession = getKieBase().newStatelessKieSession();
         RuleExecuteGlobal global = new RuleExecuteGlobal();
