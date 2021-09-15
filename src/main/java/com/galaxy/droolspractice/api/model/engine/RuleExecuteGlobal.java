@@ -1,6 +1,7 @@
 package com.galaxy.droolspractice.api.model.engine;
 
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.Data;
 
 /**
@@ -17,7 +18,7 @@ public class RuleExecuteGlobal {
     /**
      * Fact对象
      */
-    private FactBean factBean;
+    private BaseFact factBean;
 
     /**
      * 执行结果

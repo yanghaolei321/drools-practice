@@ -1,6 +1,7 @@
 package com.galaxy.droolspractice.middleware.executor;
 
 import com.alibaba.fastjson.JSON;
+import com.galaxy.droolspractice.api.model.engine.BaseFact;
 import com.galaxy.droolspractice.api.model.engine.FactBean;
 import com.galaxy.droolspractice.api.model.engine.RuleExecuteGlobal;
 import com.galaxy.droolspractice.api.model.engine.RuleExecutorResult;
@@ -53,7 +54,7 @@ public class RuleExecutor {
      * @param fact fact对象
      * @return RuleExecutorResult
      */
-    public static RuleExecutorResult execute(FactBean fact) {
+    public static RuleExecutorResult execute(BaseFact fact) {
         log.info("RuleExecutor|execute|fact={}", JSON.toJSON(fact));
         StatelessKieSession statelessKieSession = getKieBase().newStatelessKieSession();
         RuleExecuteGlobal global = new RuleExecuteGlobal();

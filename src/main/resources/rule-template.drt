@@ -11,13 +11,15 @@ package com.galaxy.droolspractice;
 
 
 global com.galaxy.droolspractice.api.model.engine.RuleExecuteGlobal globalParams;
+import com.galaxy.droolspractice.api.model.engine.FactBean;
+import com.galaxy.droolspractice.api.model.engine.User;
 
 template "judge condition"
 
 rule "judge_@{ruleName}"
 date-effective "@{beginTime}"
 when
-   @{eventType}(@{eval})
+    $p : User(age > 10);
 then
    System.out.println("==== Match === ");
 end

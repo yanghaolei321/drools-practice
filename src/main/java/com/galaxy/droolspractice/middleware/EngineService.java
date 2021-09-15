@@ -7,6 +7,8 @@ import com.galaxy.droolspractice.api.entity.Rule;
 import com.galaxy.droolspractice.api.entity.RuleField;
 import com.galaxy.droolspractice.api.model.engine.FactBean;
 import com.galaxy.droolspractice.api.model.engine.EngineDataUploadDTO;
+import com.galaxy.droolspractice.api.model.engine.RuleExecutorResult;
+import com.galaxy.droolspractice.api.model.engine.User;
 import com.galaxy.droolspractice.enums.RuleFieldTypeEnum;
 import com.galaxy.droolspractice.infra.exception.BusinessException;
 import com.galaxy.droolspractice.infra.exception.errorCode.ErrorCode;
@@ -22,6 +24,7 @@ import org.kie.api.KieServices;
 import org.kie.api.builder.KieBuilder;
 import org.kie.api.builder.KieFileSystem;
 import org.kie.api.builder.Message;
+import org.kie.api.builder.Results;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -61,14 +64,21 @@ public class EngineService {
         // 2  根据规则集获取该规则集对应的所有字段
         List<RuleField> fieldList = ruleFieldService.listByRuleId(ruleId);
 
-        // 3 动态生成Drt文件并加载到内存中
+        // 3 动态生成Fact对象 解析前端数据
+//        FactBean bean = parseData(fieldList,engineDataUploadDTO);
+//        log.info("FactBean:{}",JSON.toJSON(bean));
+        User user = new User();
+        user.setCreated(1);
+        user.setUserId("ss");
+        user.setUserName("ss");
+        user.setAge(20);
+
+        // 4 动态生成Drt文件并加载到内存中
         generateRule(rule);
 
-        // 4 动态生成Fact对象 解析前端数据
-//        FactBean bean = parseData(fieldList,engineDataUploadDTO);
-
         // 5 引擎执行
-//        ruleExecutor.execute(bean);
+        RuleExecutorResult ruleExecutorResult = RuleExecutor.execute(user);
+        log.info("ruleExecutorResult:{}",ruleExecutorResult);
 
         return Boolean.TRUE;
 
@@ -136,7 +146,9 @@ public class EngineService {
         kieFileSystem.write("src/main/resources/" + UUID.randomUUID() + ".drl", ruleStr);
         log.info("str={}", ruleStr);
         KieBuilder kb = kieServices.newKieBuilder(kieFileSystem).buildAll();
-        if (kb.getResults().hasMessages(Message.Level.ERROR)) {
+        Results results = kb.getResults();
+        log.info("RuleExecutor|Results={}", JSON.toJSON(results));
+        if (results.hasMessages(Message.Level.ERROR)) {
             log.error("create rule in kieFileSystem Error", kb.getResults());
             throw new IllegalArgumentException("生成规则文件失败");
         }
