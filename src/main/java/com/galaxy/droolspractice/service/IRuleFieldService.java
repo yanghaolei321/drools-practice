@@ -17,51 +17,14 @@ import java.util.List;
  */
 public interface IRuleFieldService extends IService<RuleField> {
 
-    /**
-     * 分页查询
-     *
-     * @return
-     * @date 2021/09/14 下午5:03
-     */
-    IPage<RuleFieldVO> page(RuleFieldPageDTO ruleFieldPageDTO);
 
     /**
-     * 查询RuleField
+     * 通过规则集id查询RuleField
      *
      * @return
      * @date 2021/09/14 下午5:03
      */
-    List<RuleFieldVO> list(RuleFieldListDTO ruleFieldListDTO);
+    List<RuleField> listByRuleId(Long ruleId);
 
-    /**
-     * 根据id获取RuleField
-     *
-     * @return
-     * @date 2021/09/14 下午5:03
-     */
-    RuleFieldVO get(IdDTO idDTO);
 
-    /**
-     * 保存RuleField
-     *
-     * @return
-     * @date 2021/09/14 下午5:03
-     */
-    Long save(RuleFieldSaveDTO ruleFieldSaveDTO);
-
-    /**
-     * 更改RuleField
-     *
-     * @return
-     * @date 2021/09/14 下午5:03
-     */
-    Boolean update(RuleFieldUpdateDTO ruleFieldUpdateDTO);
-
-    /**
-     * 通过id删除RuleField
-     *
-     * @return
-     * @date 2021/09/14 下午5:03
-     */
-    Boolean delete(IdDTO idDTO);
 }

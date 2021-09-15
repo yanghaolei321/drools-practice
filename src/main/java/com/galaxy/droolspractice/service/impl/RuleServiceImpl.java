@@ -1,17 +1,15 @@
 package com.galaxy.droolspractice.service.impl;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.galaxy.droolspractice.api.entity.Rule;
-import com.galaxy.droolspractice.api.model.rule.*;
-import com.galaxy.droolspractice.infra.dto.IdDTO;
+import com.galaxy.droolspractice.infra.exception.BusinessException;
+import com.galaxy.droolspractice.infra.exception.errorCode.ErrorCode;
 import com.galaxy.droolspractice.mapper.RuleMapper;
 import com.galaxy.droolspractice.service.IRuleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-
 
 
 /**
@@ -24,33 +22,17 @@ import java.util.List;
 @Service
 public class RuleServiceImpl extends ServiceImpl<RuleMapper, Rule> implements IRuleService {
 
-    @Override
-    public IPage<RuleVO> page(RulePageDTO rulePageDTO) {
-        return null;
-    }
 
     @Override
-    public List<RuleVO> list(RuleListDTO ruleListDTO) {
-        return null;
-    }
+    public Rule getByGuid(String guid) {
+        Rule rule = this.getOne(
+            new LambdaQueryWrapper<Rule>()
+                .eq(Rule::getGuid, guid));
 
-    @Override
-    public RuleVO get(IdDTO idDTO) {
-        return null;
-    }
-
-    @Override
-    public Long save(RuleSaveDTO ruleSaveDTO) {
-        return null;
-    }
-
-    @Override
-    public Boolean update(RuleUpdateDTO ruleUpdateDTO) {
-        return null;
-    }
-
-    @Override
-    public Boolean delete(IdDTO idDTO) {
-        return null;
+        if (ObjectUtil.isNull(rule)) {
+            log.error("--- DTO :{} ---", guid);
+            throw new BusinessException(ErrorCode.DATA_NOT_FOUND);
+        }
+        return rule;
     }
 }

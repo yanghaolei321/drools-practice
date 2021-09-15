@@ -1,10 +1,8 @@
 package com.galaxy.droolspractice.middleware;
 
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.galaxy.droolspractice.api.entity.Rule;
 import com.galaxy.droolspractice.api.entity.RuleField;
 import com.galaxy.droolspractice.api.model.engine.BeanProxy;
@@ -41,39 +39,74 @@ public class EngineService {
     private final JavaStringCompiler compiler;
 
 
-    private final String prefix = "package com.galaxy.droolspractice;" + "\n" +
-        "import com.galaxy.droolspractice.api.model.engine.BeanProxy; \n" +
-        "public class DataDTO implements BeanProxy{ " + "\n";
-
-    private final String postfix = "}";
-
+    /**
+     * 规则匹配-将上传数据解析 并进行匹配
+     *
+     * @param engineDataUploadDTO
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public String uploadData(EngineDataUploadDTO engineDataUploadDTO) throws IOException, ClassNotFoundException {
 
         // 1 根据规则集的GUID获取到规则集的id
-        Rule rule = ruleService.getOne(
-            new LambdaQueryWrapper<Rule>()
-                .eq(Rule::getGuid, engineDataUploadDTO.getGuid()));
-
-        if (ObjectUtil.isNull(rule)) {
-            log.error("--- EngineDataUploadDTO :{} ---", engineDataUploadDTO);
-            throw new BusinessException(ErrorCode.DATA_NOT_FOUND);
-        }
+        Rule rule = ruleService.getByGuid(engineDataUploadDTO.getGuid());
         Long ruleId = rule.getId();
 
         // 2  根据规则集获取该规则集对应的所有字段
-        List<RuleField> fieldVOList = ruleFieldService.list(
-            new LambdaQueryWrapper<RuleField>().in(RuleField::getRuleId, ruleId));
+        List<RuleField> fieldList = ruleFieldService.listByRuleId(ruleId);
 
-        if (CollectionUtil.isEmpty(fieldVOList)) {
-            log.error("--- EngineDataUploadDTO :{} ---", engineDataUploadDTO);
-            throw new BusinessException(ErrorCode.DATA_NOT_FOUND);
-        }
 
-        // 3 合并规则
+        // 7
+        return StrUtil.EMPTY;
+
+    }
+
+
+
+    /**
+     * 解析前端数据变成Fact对象
+     *
+     * @param fieldList fieldList
+     * @param engineDataUploadDTO dto
+     * @return fact对象
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private BeanProxy parseData(List<RuleField> fieldList, EngineDataUploadDTO engineDataUploadDTO) throws IOException, ClassNotFoundException {
+
+        // 1 把数据库中取出的字段拼接成字符串
+        String ret = transString(fieldList);
+
+        // 2 把字符串编译成动态对象
+        Map<String, byte[]> results = compiler.compile("DataDTO.java", ret);
+        Class<?> clazz = compiler.loadClass("com.galaxy.droolspractice.DataDTO", results);
+
+        // 3 json解析成Fact对象
+        BeanProxy bean = (BeanProxy) JSON.toJavaObject(engineDataUploadDTO.getJsonInfo(), clazz);
+        return bean;
+    }
+
+
+    /**
+     * 把数据库中取出的字段拼接成字符串
+     * 便于生成动态对象
+     *
+     * @param fieldList 字段
+     * @return
+     */
+    private String transString(List<RuleField> fieldList) {
+
+        final String prefix = "package com.galaxy.droolspractice;" + "\n" +
+            "import com.galaxy.droolspractice.api.model.engine.BeanProxy; \n" +
+            "public class DataDTO implements BeanProxy{ " + "\n";
+
+        final String postfix = "}";
+
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(prefix);
 
-        fieldVOList.forEach(ruleField -> {
+        fieldList.forEach(ruleField -> {
 
             // 3.1 修饰
             String s = "public ";
@@ -88,27 +121,12 @@ public class EngineService {
             // 3.3 获取变量名
             s += ruleField.getFiledName() + "; " + "\n";
 
-            log.info("Cur RuleField Id:{} Name:{}", ruleField.getId(), ruleField.getFiledName());
-            log.info("Str:{}", s);
-
             // 4 拼接
             stringBuffer.append(s);
 
         });
         stringBuffer.append(postfix);
-        String ret = stringBuffer.toString();
-        log.info(ret);
-
-
-        // 5 编译成对象
-        Map<String, byte[]> results = compiler.compile("DataDTO.java", ret);
-        Class<?> clazz = compiler.loadClass("com.galaxy.droolspractice.DataDTO", results);
-
-        // 6 json解析
-        BeanProxy bean = (BeanProxy) JSON.toJavaObject(engineDataUploadDTO.getJsonInfo(), clazz);
-        log.info("bean:{}", bean);
-        return StrUtil.EMPTY;
-
+        return stringBuffer.toString();
     }
 
 }
