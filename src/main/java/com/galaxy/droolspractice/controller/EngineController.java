@@ -41,7 +41,7 @@ public class EngineController {
 
     @ApiOperation(value = "修改规则引擎-数据提交-[LinChe][文档已经设计]", notes = "")
     @PostMapping("/updateData")
-    public R updateData(@RequestBody EngineDataUploadDTO param) throws IOException {
+    public R updateData(@RequestBody EngineDataUploadDTO param) throws IOException,ClassNotFoundException {
         return R.data(engineService.uploadData(param));
     }
 

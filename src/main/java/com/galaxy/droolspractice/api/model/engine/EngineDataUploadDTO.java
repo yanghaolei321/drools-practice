@@ -1,5 +1,6 @@
 package com.galaxy.droolspractice.api.model.engine;
 
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,6 +26,6 @@ public class EngineDataUploadDTO {
         " \"loginTime\":1605339018000, \n" +
         " \"amount\":500.0\n" +
         " }   ")
-    private String jsonInfo;
+    private JSONObject jsonInfo;
 
 }

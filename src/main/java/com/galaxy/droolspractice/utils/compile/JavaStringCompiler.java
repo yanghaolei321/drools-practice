@@ -1,5 +1,7 @@
 package com.galaxy.droolspractice.utils.compile;
 
+import org.springframework.stereotype.Service;
+
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
 import javax.tools.JavaFileObject;
@@ -14,6 +16,7 @@ import java.util.Map;
  * 
  * @author michael
  */
+@Service
 public class JavaStringCompiler {
 
 	JavaCompiler compiler;

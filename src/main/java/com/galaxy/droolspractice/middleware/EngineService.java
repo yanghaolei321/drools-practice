@@ -3,9 +3,11 @@ package com.galaxy.droolspractice.middleware;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.galaxy.droolspractice.api.entity.Rule;
 import com.galaxy.droolspractice.api.entity.RuleField;
+import com.galaxy.droolspractice.api.model.engine.BeanProxy;
 import com.galaxy.droolspractice.api.model.engine.EngineDataUploadDTO;
 import com.galaxy.droolspractice.enums.RuleFieldTypeEnum;
 import com.galaxy.droolspractice.infra.exception.BusinessException;
@@ -40,10 +42,12 @@ public class EngineService {
 
 
     private final String prefix = "package com.galaxy.droolspractice;" + "\n" +
-                                  "public class DataDTO{ " + "\n";
+        "import com.galaxy.droolspractice.api.model.engine.BeanProxy; \n" +
+        "public class DataDTO implements BeanProxy{ " + "\n";
+
     private final String postfix = "}";
 
-    public String uploadData(EngineDataUploadDTO engineDataUploadDTO) throws IOException,ClassNotFoundException {
+    public String uploadData(EngineDataUploadDTO engineDataUploadDTO) throws IOException, ClassNotFoundException {
 
         // 1 根据规则集的GUID获取到规则集的id
         Rule rule = ruleService.getOne(
@@ -100,6 +104,9 @@ public class EngineService {
         Map<String, byte[]> results = compiler.compile("DataDTO.java", ret);
         Class<?> clazz = compiler.loadClass("com.galaxy.droolspractice.DataDTO", results);
 
+        // 6 json解析
+        BeanProxy bean = (BeanProxy) JSON.toJavaObject(engineDataUploadDTO.getJsonInfo(), clazz);
+        log.info("bean:{}", bean);
         return StrUtil.EMPTY;
 
     }
