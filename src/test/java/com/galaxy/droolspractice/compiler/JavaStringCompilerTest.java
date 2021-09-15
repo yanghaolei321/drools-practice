@@ -24,7 +24,7 @@ public class JavaStringCompilerTest {
 	static final String SINGLE_JAVA = "/* a single java class to one file */  "
 			+ "package on.the.fly;                                            "
 			+ "import com.itranswarp.on.the.fly.*;                            "
-			+ "public class UserProxy extends User implements BeanProxy {     "
+			+ "public class UserProxy extends User implements FactBean {     "
 			+ "    boolean _dirty = false;                                    "
 			+ "    public void setId(String id) {                             "
 			+ "        super.setId(id);                                       "

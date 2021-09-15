@@ -1,0 +1,25 @@
+template header
+
+eval
+eventType
+ruleName
+ruleId
+beginTime
+
+
+package com.galaxy.droolspractice;
+
+
+global com.galaxy.droolspractice.api.model.engine.RuleExecuteGlobal globalParams;
+
+template "judge condition"
+
+rule "judge_@{ruleName}"
+date-effective "@{beginTime}"
+when
+   @{eventType}(@{eval})
+then
+   System.out.println("==== Match === ");
+end
+
+end template

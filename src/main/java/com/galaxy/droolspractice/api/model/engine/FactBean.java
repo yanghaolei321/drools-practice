@@ -5,7 +5,7 @@ package com.galaxy.droolspractice.api.model.engine;
  * 
  * @author yanghaolei
  */
-public interface BeanProxy {
+public interface FactBean {
 
 
 
