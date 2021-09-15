@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kmodule xmlns="http://www.drools.org/xsd/kmodule">
+
+    <kbase name="HonestPoliticianKB" packages="com.galaxy.droolspractice.rule.honestpolitician">
+        <ksession name="HonestPoliticianKS"/>
+    </kbase>
+
+    <kbase name="rules" packages="rules">
+        <!--<kbase name="rules" packages="">-->
+        <!--<kbase name="rules" packages="myrules">-->
+        <!--默认用最后一个-->
+        <!--<kbase name="rules" packages="rules,myrules">-->
+        <ksession name="ksession-rules"/>
+    </kbase>
+
+
+</kmodule>

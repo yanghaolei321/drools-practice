@@ -10,6 +10,7 @@ package com.galaxy.droolspractice.controller;
 import com.galaxy.droolspractice.api.model.engine.EngineDataUploadDTO;
 import com.galaxy.droolspractice.infra.bean.R;
 import com.galaxy.droolspractice.infra.dto.IdDTO;
+import com.galaxy.droolspractice.middleware.EngineDemoService;
 import com.galaxy.droolspractice.middleware.EngineService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,8 +39,9 @@ import java.io.IOException;
 public class EngineController {
 
     private final EngineService engineService;
+    private final EngineDemoService engineDemoService;
 
-    @ApiOperation(value = "修改规则引擎-数据提交-[LinChe][文档已经设计]", notes = "")
+    @ApiOperation(value = "规则引擎-数据提交-[LinChe][文档已经设计]", notes = "")
     @PostMapping("/updateData")
     public R updateData(@RequestBody EngineDataUploadDTO param) throws IOException,ClassNotFoundException {
         return R.data(engineService.uploadData(param));
@@ -51,4 +53,10 @@ public class EngineController {
         return null;
     }
 
+
+    @ApiOperation(value = "规则引擎-简单的demo演示-[LinChe][文档已经设计]", notes = "静态数据对象/规则")
+    @PostMapping("/showDemo")
+    public R showDemo()  {
+        return R.data(engineDemoService.showDemo());
+    }
 }

@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 /**
  * Sample class as JavaBean.
  * 
- * @author michael
+ * @author yanghaolei
  */
 @Data
 @Accessors(chain = true)
